@@ -74,7 +74,7 @@ services:
         condition: on-failure    
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor
+    image: braingamer/cadvisor-arm:latest
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw

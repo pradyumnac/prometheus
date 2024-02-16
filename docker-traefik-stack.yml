@@ -18,11 +18,12 @@ services:
     command:
       - "--logLevel=DEBUG"
       - "--api"
+      - "--api.dashboard=true"
       - "--metrics"
       - "--metrics.prometheus.buckets=0.1,0.3,1.2,5.0"
       - "--docker"
       - "--docker.swarmMode"
-      - "--docker.domain=docker.localhost"
+      - "--docker.domain=docker.local"
       - "--docker.watch"
     networks:
       - traefik
@@ -68,7 +69,7 @@ services:
         constraints:
           - node.role==manager
       labels:
-          - "traefik.frontend.rule=Host:prometheus.localhost"
+          - "traefik.frontend.rule=Host:prometheus.home.local"
           - "traefik.backend=prometheus"
           - "traefik.port=9090"
           - "traefik.docker.network=traefik"
@@ -114,7 +115,7 @@ services:
         condition: on-failure    
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor
+    image: thedavis/cadvisor-arm
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -146,9 +147,10 @@ services:
         constraints:
           - node.role==manager
       labels:
-        -  "traefik.frontend.rule=Host:grafana.localhost"
+        - "traefik.frontend.rule=Host:grafana.home.local"
         - "traefik.backend=grafana"
         - "traefik.port=3000"
         - "traefik.docker.network=traefik"
       restart_policy:
         condition: on-failure
+
